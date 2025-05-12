@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hodory/core/theming/text_styles.dart';
+import 'package:hodory/features/attendanceView/Presentaion/manager/attendance_cubit/attendance_cubit.dart';
 
 class AttendanceCardOptions extends StatelessWidget {
-  const AttendanceCardOptions({super.key, this.initialValue});
+  const AttendanceCardOptions({
+    super.key,
+    this.initialValue,
+    required this.studetnId,
+  });
+  final String studetnId;
   final String? initialValue;
   static Map<String, Color> options = {'P': Colors.green, 'A': Colors.red};
 
@@ -20,7 +26,13 @@ class AttendanceCardOptions extends StatelessWidget {
               options.entries.map((option) {
                 final isSelected = selected == option.key;
                 return InkWell(
-                  onTap: () => selectedOption.value = option.key,
+                  onTap: () {
+                    selectedOption.value = option.key;
+                    AttendanceCubit.get(context).takeAttendance(
+                      value: selectedOption.value ?? "",
+                      studentId: studetnId,
+                    );
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),

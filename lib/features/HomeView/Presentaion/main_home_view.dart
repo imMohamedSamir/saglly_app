@@ -14,11 +14,13 @@ class MainHomeView extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<int> currentIndex = ValueNotifier(2);
+    final ValueNotifier<int> currentIndex = ValueNotifier(1);
     return ValueListenableBuilder(
       valueListenable: currentIndex,
       builder: (BuildContext context, dynamic value, Widget? child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
+
           body: IndexedStack(index: currentIndex.value, children: pages),
           bottomNavigationBar: HomeNavBar(
             onTap: (p0) {

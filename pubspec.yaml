@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.8
+  dartz: ^0.10.1
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.9.3
@@ -38,8 +39,10 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   intl: ^0.20.2
+  supabase_flutter: ^2.9.0
   toastification: ^3.0.2
-
+  flutter_bloc: ^9.0.0
+  shimmer: ^3.0.0
 dev_dependencies:
   build_runner: ^2.4.4
 

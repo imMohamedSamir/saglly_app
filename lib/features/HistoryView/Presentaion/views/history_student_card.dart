@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hodory/core/theming/color_manager.dart';
 import 'package:hodory/core/theming/text_styles.dart';
-import 'package:hodory/features/attendanceView/Presentaion/views/attendance_card_options.dart';
+import 'package:hodory/features/HistoryView/Presentaion/views/history_attendance_options.dart';
+import 'package:hodory/features/attendanceView/data/models/attendance_model.dart';
 
 class HistoryStudentCard extends StatelessWidget {
-  const HistoryStudentCard({super.key});
-
+  const HistoryStudentCard({super.key, required this.model});
+  final AttendanceModel model;
   @override
   Widget build(BuildContext context) {
+    final name = model.studentName ?? "";
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: ListTile(
@@ -18,17 +20,20 @@ class HistoryStudentCard extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(color: ColorManager.primary),
             child: Text(
-              _getName(name: "Alice Johnson"),
+              _getName(name: name),
               style: AppTextStyles.medium18.copyWith(color: Colors.white),
             ),
           ),
         ),
         title: Text(
-          'Alice Johnson',
+          name,
           style: AppTextStyles.medium16.copyWith(color: ColorManager.lightText),
         ),
 
-        trailing: const AttendanceCardOptions(),
+        trailing: HistoryAttendanceOptions(
+          studetnId: model.studentId ?? "",
+          initialValue: model.status,
+        ),
       ),
     );
   }

@@ -57,7 +57,7 @@ class CustomDropDown<T> extends StatelessWidget {
                   initialSelection: initialSelection,
                   enableFilter: true,
                   focusNode: isSearch ? FocusNode() : null,
-                  controller: TextEditingController(text: field.value),
+                  // controller: TextEditingController(text: field.value),
                   textStyle: AppTextStyles.medium16.copyWith(
                     color: ColorManager.lightText,
                   ),

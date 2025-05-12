@@ -10,15 +10,13 @@ class DateFormater {
     return formattedDate;
   }
 
-  static String fromatDate({required String? value, bool isAr = true}) {
+  static String fromatDate({required String? value}) {
     if (value == null || value == "") {
       return '';
     }
     DateTime dateTime = DateTime.tryParse(value) ?? DateTime.now();
-    String formattedDate = DateFormat(
-      'dd/MM/yyyy',
-      isAr ? 'ar' : 'en',
-    ).format(dateTime);
+
+    String formattedDate = DateFormat('EEEE, d MMMM, y').format(dateTime);
     return formattedDate;
   }
   // static String formatTimeAgo({required String? value}) {

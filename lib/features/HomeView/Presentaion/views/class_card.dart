@@ -5,11 +5,12 @@ import 'package:hodory/core/theming/color_manager.dart';
 import 'package:hodory/core/theming/text_styles.dart';
 import 'package:hodory/core/widgets/customButton.dart';
 import 'package:hodory/features/ClassView/Presentaion/class_view.dart';
+import 'package:hodory/features/HomeView/data/models/class_model.dart';
 import 'package:hodory/features/attendanceView/Presentaion/attendance_view.dart';
 
 class ClassCard extends StatelessWidget {
-  const ClassCard({super.key});
-
+  const ClassCard({super.key, required this.model});
+  final ClassModel model;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +29,7 @@ class ClassCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Mathematics 101",
+                model.name ?? "",
                 style: AppTextStyles.medium16.copyWith(
                   color: ColorManager.lightText,
                 ),
@@ -38,7 +39,7 @@ class ClassCard extends StatelessWidget {
                 onPressed: () {
                   NavigateToPage.slideFromRight(
                     context: context,
-                    page: const ClassView(),
+                    page: ClassView(model: model),
                   );
                 },
                 icon: const Icon(Icons.edit),
@@ -46,7 +47,7 @@ class ClassCard extends StatelessWidget {
             ],
           ),
           Text(
-            "32 students",
+            "${model.studentNo} students",
             style: AppTextStyles.regular12.copyWith(fontSize: 16),
           ),
           const Gap(16),
@@ -57,7 +58,7 @@ class ClassCard extends StatelessWidget {
             onPressed: () {
               NavigateToPage.slideFromBottom(
                 context: context,
-                page: const AttendanceView(),
+                page: AttendanceView(model: model),
               );
             },
           ),

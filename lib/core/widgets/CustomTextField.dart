@@ -69,7 +69,7 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       onTap: onTap,
       readOnly: readOnly ?? false,
-      style: AppTextStyles.medium18.copyWith(color: const Color(0xff240301)),
+      style: AppTextStyles.medium16.copyWith(color: const Color(0xff240301)),
       initialValue: initialValue,
       obscureText: secure ?? false,
       onFieldSubmitted: onFieldSubmitted,
@@ -93,7 +93,7 @@ class CustomTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         label: label != null ? Text(label!) : null,
         labelStyle: AppTextStyles.medium16.copyWith(
-          color: ColorManager.secondary,
+          color: ColorManager.lightText,
         ),
 
         focusedBorder: OutlineInputBorder(
