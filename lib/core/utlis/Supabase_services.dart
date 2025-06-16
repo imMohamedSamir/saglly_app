@@ -10,9 +10,11 @@ class SupabaseServices {
   Future<List<Map<String, dynamic>>> get({
     required String table,
     Map<String, dynamic>? filters,
-    String? foreignTables, // NEW PARAM
+    String? startDate,
+    String? endDate,
+    String dateField = 'date', // You can change this to 'created_at' if needed
+    String? foreignTables,
   }) async {
-    // Apply select with foreignTables if provided
     var query =
         foreignTables != null
             ? _client.from(table).select('*,$foreignTables')
@@ -26,6 +28,14 @@ class SupabaseServices {
         query = query.eq(field, value);
       }
     });
+
+    // Apply date range filters if provided
+    if (startDate != null) {
+      query = query.gte(dateField, startDate);
+    }
+    if (endDate != null) {
+      query = query.lte(dateField, endDate);
+    }
 
     final response = await query;
     return List<Map<String, dynamic>>.from(response);

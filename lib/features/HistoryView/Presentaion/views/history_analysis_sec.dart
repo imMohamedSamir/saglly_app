@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hodory/core/theming/color_manager.dart';
 import 'package:hodory/core/theming/text_styles.dart';
 import 'package:hodory/features/HistoryView/Presentaion/manager/cubit/history_cubit.dart';
+import 'package:hodory/features/ReportsView/Presentaion/views/loading_analysis_sec.dart';
 import 'package:hodory/features/attendanceView/data/models/header_analysis_model.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HistoryAnalysisSec extends StatelessWidget {
   const HistoryAnalysisSec({super.key});
@@ -15,7 +14,7 @@ class HistoryAnalysisSec extends StatelessWidget {
     return BlocBuilder<HistoryCubit, HistoryState>(
       builder: (context, state) {
         if (state is HistoryLoading) {
-          return _buildShimmer();
+          return const LoadingAnalysisSec();
         }
 
         final options =
@@ -100,34 +99,6 @@ class HistoryAnalysisSec extends StatelessWidget {
                   ),
                 )
                 .toList(),
-      ),
-    );
-  }
-
-  Widget _buildShimmer() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          padding: const EdgeInsets.all(16),
-          width: double.infinity,
-          height: 110.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

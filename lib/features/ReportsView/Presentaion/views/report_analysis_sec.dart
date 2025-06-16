@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-import 'attendance_table.dart';
+import 'report_attendance_table.dart';
 
 class ReportAnalysisSec extends StatelessWidget {
   const ReportAnalysisSec({super.key});
@@ -17,13 +17,37 @@ class ReportAnalysisSec extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final attendance = [
-      {"date": "Oct 22, 2023", "present": 42, "absent": 3, "percentage": "93.3%"},
-      {"date": "Oct 21, 2023", "present": 41, "absent": 4, "percentage": "91.1%"},
-      {"date": "Oct 20, 2023", "present": 43, "absent": 2, "percentage": "95.6%"},
-      {"date": "Oct 19, 2023", "present": 40, "absent": 5, "percentage": "88.9%"},
-      {"date": "Oct 18, 2023", "present": 44, "absent": 1, "percentage": "97.8%"},
+      {
+        "date": "Oct 22, 2023",
+        "present": 42,
+        "absent": 3,
+        "percentage": "93.3%",
+      },
+      {
+        "date": "Oct 21, 2023",
+        "present": 41,
+        "absent": 4,
+        "percentage": "91.1%",
+      },
+      {
+        "date": "Oct 20, 2023",
+        "present": 43,
+        "absent": 2,
+        "percentage": "95.6%",
+      },
+      {
+        "date": "Oct 19, 2023",
+        "present": 40,
+        "absent": 5,
+        "percentage": "88.9%",
+      },
+      {
+        "date": "Oct 18, 2023",
+        "present": 44,
+        "absent": 1,
+        "percentage": "97.8%",
+      },
     ];
-
 
     Future<void> saveAndShareFile({
       required File originalFile,
@@ -35,7 +59,9 @@ class ReportAnalysisSec extends StatelessWidget {
       final savedFile = await originalFile.copy(newPath);
       print('✅ File saved to: $newPath');
 
-      await Share.shareXFiles([XFile(savedFile.path)], text: 'Attendance Report');
+      await Share.shareXFiles([
+        XFile(savedFile.path),
+      ], text: 'Attendance Report');
     }
 
     /// Generates a PDF report of attendance and saves to Downloads + shares it
@@ -49,12 +75,17 @@ class ReportAnalysisSec extends StatelessWidget {
           build: (context) {
             return pw.Table.fromTextArray(
               headers: ['Date', 'Present', 'Absent', '%'],
-              data: data.map((row) => [
-                row['date'],
-                row['present'].toString(),
-                row['absent'].toString(),
-                row['percentage'].toString(),
-              ]).toList(),
+              data:
+                  data
+                      .map(
+                        (row) => [
+                          row['date'],
+                          row['present'].toString(),
+                          row['absent'].toString(),
+                          row['percentage'].toString(),
+                        ],
+                      )
+                      .toList(),
             );
           },
         ),
@@ -65,7 +96,10 @@ class ReportAnalysisSec extends StatelessWidget {
       final file = File(tempPath);
       await file.writeAsBytes(await pdf.save());
 
-      await saveAndShareFile(originalFile: file, filename: 'attendance_report.pdf');
+      await saveAndShareFile(
+        originalFile: file,
+        filename: 'attendance_report.pdf',
+      );
     }
 
     /// Generates an Excel report of attendance and saves to Downloads + shares it
@@ -94,11 +128,15 @@ class ReportAnalysisSec extends StatelessWidget {
       final fileBytes = excel.encode();
       final tempDir = await getTemporaryDirectory();
       final tempPath = '${tempDir.path}/attendance_report.xlsx';
-      final file = File(tempPath)
-        ..createSync(recursive: true)
-        ..writeAsBytesSync(fileBytes!);
+      final file =
+          File(tempPath)
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(fileBytes!);
 
-      await saveAndShareFile(originalFile: file, filename: 'attendance_report.xlsx');
+      await saveAndShareFile(
+        originalFile: file,
+        filename: 'attendance_report.xlsx',
+      );
     }
 
     return Column(
@@ -147,19 +185,24 @@ class ReportAnalysisSec extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.only(right:  8.0),
+                                padding: EdgeInsets.only(right: 8.0),
                                 child: Text(
-
                                   'Total Students',
-                                  maxLines: 2,style: TextStyle(overflow: TextOverflow.ellipsis,),
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
 
-                            Text('93.5%',
-                              maxLines: 2,style: TextStyle(overflow: TextOverflow.ellipsis),
-                              overflow: TextOverflow.ellipsis,),
+                            Text(
+                              '93.5%',
+                              maxLines: 2,
+                              style: TextStyle(overflow: TextOverflow.ellipsis),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ],
                         ),
                       ],
@@ -186,8 +229,8 @@ class ReportAnalysisSec extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: ()async {
-               await generatePdfReport(data: attendance);
+              onPressed: () async {
+                await generatePdfReport(data: attendance);
               },
               icon: const Icon(Icons.picture_as_pdf_rounded, size: 20),
               label: const Text('Export as PDF'),
@@ -206,18 +249,17 @@ class ReportAnalysisSec extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () async{
-              await  generateExcelReport(data: attendance);
+              onPressed: () async {
+                await generateExcelReport(data: attendance);
               },
               icon: const Icon(Icons.file_copy_outlined, size: 20),
               label: const Text('Export as Excel'),
             ),
           ],
         ),
-        Text('Weekly attendance',style: AppTextStyles.medium16,),
+        Text('Weekly attendance', style: AppTextStyles.medium16),
         const ChartBody(),
-        const AttendanceTable(),
-
+        const ReportAttendanceTable(),
       ],
     );
   }

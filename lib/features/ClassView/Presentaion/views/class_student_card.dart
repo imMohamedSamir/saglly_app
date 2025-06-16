@@ -39,7 +39,7 @@ class ClassStudentCard extends StatelessWidget {
           ),
           SlidableAction(
             onPressed: (context) {
-              CustomDialog.deleteStudetn(
+              CustomDialog.deleteStudent(
                 name: model.name ?? "",
                 onPressed: () {
                   StudentsCubit.get(safeContext).deleteStudent(model: model);

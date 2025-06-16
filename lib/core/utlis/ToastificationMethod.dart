@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hodory/core/theming/color_manager.dart';
 import 'package:toastification/toastification.dart';
 
 import '../theming/text_styles.dart';
@@ -14,7 +15,7 @@ abstract class CustomToastification {
       backgroundColor: Colors.red,
       description: Text(
         content,
-        style: AppTextStyles.bold18.copyWith(color: Colors.white),
+        style: AppTextStyles.medium18.copyWith(color: Colors.white),
       ),
     );
   }
@@ -28,7 +29,7 @@ abstract class CustomToastification {
       backgroundColor: Colors.green,
       description: Text(
         content,
-        style: AppTextStyles.bold18.copyWith(color: Colors.white),
+        style: AppTextStyles.medium18.copyWith(color: Colors.white),
       ),
     );
   }
@@ -42,7 +43,7 @@ abstract class CustomToastification {
       backgroundColor: Colors.yellow,
       description: Text(
         content,
-        style: AppTextStyles.bold18.copyWith(color: Colors.white),
+        style: AppTextStyles.medium18.copyWith(color: ColorManager.lightText),
       ),
     );
   }

@@ -19,7 +19,7 @@ class AttendanceStudentsList extends StatelessWidget {
           } else if (state is StudentsSuccess) {
             final studetns = state.students;
             if (studetns.isEmpty) {
-              return const ClassStudentsEmpty();
+              return const SliverToBoxAdapter(child: ClassStudentsEmpty());
             }
             return SliverList.builder(
               itemCount: studetns.length,

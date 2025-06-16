@@ -73,7 +73,7 @@ class CustomPasswordTextfield extends StatelessWidget {
             ),
             label: label != null ? Text(label!) : null,
             labelStyle: AppTextStyles.medium16.copyWith(
-              color: ColorManager.secondary,
+              color: ColorManager.lightText,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),

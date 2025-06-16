@@ -9,4 +9,6 @@ abstract class AppConstatnts {
   static const String studentClass = "student_class";
   static const String notificationChannel = "basic_channel";
   static const String userId = "userId";
+  static const String teachers = "teachers";
+  static const String assignClass = "assign_class";
 }

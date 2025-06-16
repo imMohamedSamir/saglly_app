@@ -3,8 +3,10 @@ import 'package:gap/gap.dart';
 import 'package:hodory/core/routing/NavigationMethod.dart';
 import 'package:hodory/core/theming/color_manager.dart';
 import 'package:hodory/core/theming/text_styles.dart';
+import 'package:hodory/core/utlis/custom_dialog.dart';
 import 'package:hodory/core/widgets/customButton.dart';
 import 'package:hodory/features/ClassView/Presentaion/class_view.dart';
+import 'package:hodory/features/HomeView/Presentaion/manager/class_cubit/class_cubit.dart';
 import 'package:hodory/features/HomeView/data/models/class_model.dart';
 import 'package:hodory/features/attendanceView/Presentaion/attendance_view.dart';
 
@@ -46,9 +48,25 @@ class ClassCard extends StatelessWidget {
               ),
             ],
           ),
-          Text(
-            "${model.studentNo} students",
-            style: AppTextStyles.regular12.copyWith(fontSize: 16),
+          Row(
+            children: [
+              Text(
+                "${model.studentNo} students",
+                style: AppTextStyles.regular12.copyWith(fontSize: 16),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  CustomDialog.deleteClass(
+                    name: model.name ?? "",
+                    onPressed: () {
+                      ClassCubit.get(context).deleteClass(id: model.id ?? "");
+                    },
+                  );
+                },
+                icon: const Icon(Icons.delete, color: Colors.red),
+              ),
+            ],
           ),
           const Gap(16),
           CustomButton(

@@ -17,6 +17,7 @@ class HistoryFilterSec extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cotroller = TextEditingController();
+    DateTime initialDate = DateTime.now();
     String classId = "";
     String date = "";
     return Column(
@@ -24,51 +25,50 @@ class HistoryFilterSec extends StatelessWidget {
       spacing: 8,
       children: [
         Text("Classes filter ", style: AppTextStyles.medium16),
-        Column(
-          spacing: 8,
-          children: [
-            BlocBuilder<ClassCubit, ClassState>(
-              builder: (context, state) {
-                final List<ClassModel> classes =
-                    state is ClassSuccess ? state.classes : [];
-                return CustomDropDown(
-                  hint: "selecet class",
-                  items: classes,
-                  getLabel: (p0) => p0.name ?? "",
-                  getValue: (p0) => p0.id,
-                  onChanged: (p0) {
-                    classId = p0;
-                    if (date.isNotEmpty && classId.isNotEmpty) {
-                      HistoryCubit.get(
-                        context,
-                      ).getHistory(date: date, classID: classId);
-                    }
-                  },
-                );
+        BlocBuilder<ClassCubit, ClassState>(
+          builder: (context, state) {
+            final List<ClassModel> classes =
+                state is ClassSuccess ? state.classes : [];
+            return CustomDropDown(
+              hint: "selecet class",
+              items: classes,
+              getLabel: (p0) => p0.name ?? "",
+              getValue: (p0) => p0.id,
+              onChanged: (p0) {
+                classId = p0;
+                if (date.isNotEmpty && classId.isNotEmpty) {
+                  HistoryCubit.get(
+                    context,
+                  ).getHistory(date: date, classID: classId);
+                }
               },
-            ),
-            CustomTextField(
-              controller: cotroller,
-              hintText: "selecet date",
-              suffixIcon: const Icon(Icons.date_range_rounded),
-              readOnly: true,
-              maxLines: 1,
-              onTap: () {
-                _pickDate(
-                  context,
-                  onChanged: (value) {
-                    date = value;
-                    cotroller.text = DateFormater.fromatDate(value: value);
-                    if (date.isNotEmpty && classId.isNotEmpty) {
-                      HistoryCubit.get(
-                        context,
-                      ).getHistory(date: date, classID: classId);
-                    }
-                  },
-                );
+            );
+          },
+        ),
+        Text("Date filter", style: AppTextStyles.medium16),
+
+        CustomTextField(
+          controller: cotroller,
+          hintText: "selecet date",
+          suffixIcon: const Icon(Icons.date_range_rounded),
+          readOnly: true,
+          maxLines: 1,
+          onTap: () {
+            _pickDate(
+              context,
+              initialDate: initialDate,
+              onChanged: (value) {
+                initialDate = DateTime.parse(value);
+                date = value;
+                cotroller.text = DateFormater.fromatDate(value: value);
+                if (date.isNotEmpty && classId.isNotEmpty) {
+                  HistoryCubit.get(
+                    context,
+                  ).getHistory(date: date, classID: classId);
+                }
               },
-            ),
-          ],
+            );
+          },
         ),
       ],
     );
@@ -77,6 +77,7 @@ class HistoryFilterSec extends StatelessWidget {
   void _pickDate(
     BuildContext context, {
     required void Function(String)? onChanged,
+    DateTime? initialDate,
   }) {
     showDatePicker(
       builder: (context, child) {
@@ -92,8 +93,8 @@ class HistoryFilterSec extends StatelessWidget {
         );
       },
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now().subtract(const Duration(days: 1)),
+      initialDate: initialDate,
+      firstDate: DateTime(2015),
       lastDate: DateTime(2100),
     ).then((value) {
       if (value != null) {

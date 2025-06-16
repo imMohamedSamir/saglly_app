@@ -11,35 +11,33 @@ class ClassesListSec extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RefreshIndicator(
-        color: ColorManager.primary,
-        onRefresh: () async {
-          ClassCubit.get(context).getClasses();
-        },
-        child: BlocBuilder<ClassCubit, ClassState>(
-          builder: (context, state) {
-            if (state is ClassLoading) {
-              return const ClassLoadingSec();
-            } else if (state is ClassSuccess) {
-              if (state.classes.isEmpty) {
-                return const ClassesEmpty();
-              }
-              final classes = state.classes;
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: classes.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ClassCard(model: classes[index]);
-                  },
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-      ),
+    return BlocBuilder<ClassCubit, ClassState>(
+      builder: (context, state) {
+        if (state is ClassLoading) {
+          return const ClassLoadingSec();
+        } else if (state is ClassSuccess) {
+          if (state.classes.isEmpty) {
+            return const ClassesEmpty();
+          }
+          final classes = state.classes;
+          return Expanded(
+            child: RefreshIndicator(
+              color: ColorManager.primary,
+              onRefresh: () async {
+                ClassCubit.get(context).getClasses();
+              },
+              child: ListView.builder(
+                itemCount: classes.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ClassCard(model: classes[index]);
+                },
+              ),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 }

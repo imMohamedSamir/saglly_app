@@ -16,6 +16,7 @@ class HomeNavBar extends StatelessWidget {
     return BottomNavigationBar(
       elevation: 10,
       backgroundColor: Colors.white,
+
       selectedLabelStyle: AppTextStyles.semiBold16.copyWith(fontSize: 14.sp),
       unselectedLabelStyle: AppTextStyles.medium16.copyWith(fontSize: 13.sp),
       selectedItemColor: ColorManager.primary,

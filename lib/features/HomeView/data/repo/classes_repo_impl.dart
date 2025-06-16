@@ -6,15 +6,26 @@ import 'package:hodory/core/utlis/Supabase_services.dart';
 import 'package:hodory/features/HomeView/data/models/class_model.dart';
 import 'package:hodory/features/HomeView/data/models/student_model.dart';
 import 'package:hodory/features/HomeView/data/repo/classes_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClassesRepoImpl implements ClassesRepo {
   final SupabaseServices _services;
+  final SharedPreferences _pref;
 
-  ClassesRepoImpl({required SupabaseServices services}) : _services = services;
+  ClassesRepoImpl({
+    required SupabaseServices services,
+    required SharedPreferences pref,
+  }) : _services = services,
+       _pref = pref;
   @override
   Future<Either<String, List<ClassModel>>> getClasses({String? name}) async {
+    final userId = _pref.getString(AppConstatnts.userId);
+
     try {
-      final fliter = name != null ? {'class_name': "%$name%"} : null;
+      final fliter =
+          name != null
+              ? {'class_name': "%$name%", "teacher_id": userId}
+              : {"teacher_id": userId};
       final response = await _services.get(
         table: AppConstatnts.classesStudentsCount,
         filters: fliter,
@@ -33,14 +44,16 @@ class ClassesRepoImpl implements ClassesRepo {
   @override
   Future<Either<String, dynamic>> addClass({required ClassModel model}) async {
     try {
+      final userId = _pref.getString(AppConstatnts.userId);
       final response = await _services.insert(
         table: AppConstatnts.classes,
         values: model.toJson(),
-        // filters: {"name": name ?? ""},
-        // foreignTables: 'student_class(students(*))',
       );
-
-      return right(response);
+      final response2 = await _services.insert(
+        table: AppConstatnts.assignClass,
+        values: {'class_id': response['id'], 'teacher_id': userId},
+      );
+      return right(response2);
     } catch (e) {
       log(e.toString());
       return const Left('Error');
@@ -129,6 +142,23 @@ class ClassesRepoImpl implements ClassesRepo {
       log(response.toString());
 
       return right(response);
+    } catch (e) {
+      log(e.toString());
+      return const Left('Error');
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> deleteClass({required String id}) async {
+    try {
+      await _services.delete(
+        table: AppConstatnts.assignClass,
+        id: id,
+        idField: "class_id",
+      );
+      await _services.delete(table: AppConstatnts.classes, id: id);
+
+      return right("deleted");
     } catch (e) {
       log(e.toString());
       return const Left('Error');

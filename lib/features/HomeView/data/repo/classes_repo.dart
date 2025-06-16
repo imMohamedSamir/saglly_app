@@ -13,4 +13,5 @@ abstract class ClassesRepo {
   Future<Either<String, dynamic>> updateStudent({required StudentModel model});
 
   Future<Either<String, dynamic>> deleteStudent({required String id});
+  Future<Either<String, dynamic>> deleteClass({required String id});
 }

@@ -5,18 +5,6 @@ import '../theming/color_manager.dart';
 import '../theming/text_styles.dart';
 
 class CustomAppbar {
-  static AppBar auth({required String title}) {
-    return AppBar(
-      title: Text(
-        title,
-        style: AppTextStyles.semiBold18.copyWith(
-          color: ColorManager.secondary,
-          fontSize: 22,
-        ),
-      ),
-    );
-  }
-
   static AppBar normal({required String title}) {
     return AppBar(
       leading: IconButton(

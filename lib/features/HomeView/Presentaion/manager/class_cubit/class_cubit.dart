@@ -30,11 +30,31 @@ class ClassCubit extends Cubit<ClassState> {
       emit(ClassLoading());
       final result = await _repo.addClass(model: model);
       result.fold(
-        (l) => CustomToastification.errorDialog(content: "there was an error!"),
+        (l) {
+          CustomToastification.errorDialog(content: "there was an error!");
+          emit(ClassFailure());
+        },
         (classes) {
           Navigator.pop(navigatorKey.currentContext!);
+          emit(ClassSuccess(classes: const []));
         },
       );
     }
+  }
+
+  void deleteClass({required String id}) async {
+    final result = await _repo.deleteClass(id: id);
+    result.fold(
+      (fail) {
+        CustomToastification.errorDialog(content: "there was an error!");
+      },
+      (success) {
+        Navigator.pop(navigatorKey.currentContext!);
+        CustomToastification.warningDialog(
+          content: "The calss has been deleted",
+        );
+        getClasses();
+      },
+    );
   }
 }

@@ -3,6 +3,7 @@ import 'package:hodory/features/HistoryView/Presentaion/history_view.dart';
 import 'package:hodory/features/HomeView/Presentaion/home_nav_bar.dart';
 import 'package:hodory/features/HomeView/Presentaion/home_view.dart';
 import 'package:hodory/features/ReportsView/Presentaion/reports_view.dart';
+import 'package:hodory/features/profileView/Presentaion/profile_view.dart';
 
 class MainHomeView extends StatelessWidget {
   const MainHomeView({super.key});
@@ -10,11 +11,11 @@ class MainHomeView extends StatelessWidget {
     const HomeView(),
     const HistoryView(),
     const ReportsView(),
-    const SizedBox(),
+    const ProfileView(),
   ];
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<int> currentIndex = ValueNotifier(1);
+    final ValueNotifier<int> currentIndex = ValueNotifier(0);
     return ValueListenableBuilder(
       valueListenable: currentIndex,
       builder: (BuildContext context, dynamic value, Widget? child) {
